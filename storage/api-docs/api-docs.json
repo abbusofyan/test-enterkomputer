@@ -1,0 +1,323 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Dokumentasi API",
+        "description": "Lorem Ipsum",
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://enterkomputer.test/api/v1",
+            "description": "Demo API Server"
+        }
+    ],
+    "paths": {
+        "/order/get-bill/{order_id}": {
+            "get": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Get bill order",
+                "description": "Menampilkan detail tagihan pesanan berdasarkan order id",
+                "operationId": "a0ea431bdcc419f7561cc43f83b6918a",
+                "parameters": [
+                    {
+                        "name": "order_id",
+                        "in": "path",
+                        "description": "Order ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "counter": {
+                                            "description": "Counter name",
+                                            "type": "string"
+                                        },
+                                        "customer_name": {
+                                            "description": "Customer name",
+                                            "type": "string"
+                                        },
+                                        "pesanan": {
+                                            "description": "List of ordered products",
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "product": {
+                                                        "description": "Product name",
+                                                        "type": "string"
+                                                    },
+                                                    "qty": {
+                                                        "description": "Quantity ordered",
+                                                        "type": "integer"
+                                                    },
+                                                    "sub_total": {
+                                                        "description": "Subtotal price",
+                                                        "type": "number"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "total": {
+                                            "description": "Total price",
+                                            "type": "number"
+                                        },
+                                        "tanggal_pembelian": {
+                                            "description": "Purchase date and time",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Order not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "description": "Status of the response",
+                                            "type": "string",
+                                            "example": "Failed"
+                                        },
+                                        "message": {
+                                            "description": "Error message",
+                                            "type": "string",
+                                            "example": "Data pesanan tidak ditemukan"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/order/create": {
+            "post": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Create new order",
+                "description": "Endpoint untuk membuat order baru. untuk mendapatkan product id anda bisa menggunakan endpoint /product",
+                "operationId": "623ba4cc0d141b8b2e375142db8aae0e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "counter_id": {
+                                        "description": "Id meja yang melayani customer",
+                                        "type": "number",
+                                        "example": 1
+                                    },
+                                    "customer_name": {
+                                        "description": "Nama customer",
+                                        "type": "string",
+                                        "example": "Budi"
+                                    },
+                                    "items": {
+                                        "description": "Product yang dipesan",
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "product_id": {
+                                                    "description": "Id product",
+                                                    "type": "number",
+                                                    "example": 15
+                                                },
+                                                "qty": {
+                                                    "description": "Jumlah product yang dipesan",
+                                                    "type": "number",
+                                                    "example": 2
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Status pembuatan order",
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "description": "Transaction status message",
+                                            "type": "string",
+                                            "example": "Pesanan diproses"
+                                        },
+                                        "order": {
+                                            "description": "Details of the created order",
+                                            "properties": {
+                                                "order_id": {
+                                                    "description": "Order ID",
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "total_price": {
+                                                    "description": "Total price of the order",
+                                                    "type": "number",
+                                                    "example": 50000
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "items": {
+                                            "description": "Details of ordered items",
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "product_id": {
+                                                        "description": "Product ID",
+                                                        "type": "integer",
+                                                        "example": 15
+                                                    },
+                                                    "qty": {
+                                                        "description": "Quantity ordered",
+                                                        "type": "integer",
+                                                        "example": 2
+                                                    },
+                                                    "total_price": {
+                                                        "description": "Total price of this item",
+                                                        "type": "number",
+                                                        "example": 10000
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invalid input data"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/product": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Get all products",
+                "description": "Menampilkan semua list product",
+                "operationId": "7ceb642550a22afc218a30feb44caf00",
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "description": "List of products",
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "description": "Product ID yang bisa digunakan sebagai parameter untuk membuat order",
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "category": {
+                                                        "description": "Product category",
+                                                        "type": "string",
+                                                        "example": "Beverage"
+                                                    },
+                                                    "name": {
+                                                        "description": "Nama product",
+                                                        "type": "string",
+                                                        "example": "Cappuccino"
+                                                    },
+                                                    "price": {
+                                                        "description": "Harga per product",
+                                                        "type": "number",
+                                                        "example": 50000
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Order",
+            "description": "Order"
+        },
+        {
+            "name": "Product",
+            "description": "Product"
+        }
+    ]
+}
